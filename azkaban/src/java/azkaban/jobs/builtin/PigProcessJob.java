@@ -32,6 +32,7 @@ public class PigProcessJob extends JavaProcessJob {
 	public static final String PIG_PARAM_FILES = "paramfile";
 	public static final String HADOOP_UGI = "hadoop.job.ugi";
 	public static final String DEBUG = "debug";
+	private static final String PIG_ADDITIONAL_JARS = "pig.additional.jars";
 
 	public static final String PIG_JAVA_CLASS = "org.apache.pig.Main";
 
@@ -56,6 +57,11 @@ public class PigProcessJob extends JavaProcessJob {
 		String hadoopUGI = getHadoopUGI();
 		if (hadoopUGI != null) {
 			args += " -Dhadoop.job.ugi=" + hadoopUGI;
+		}
+		
+		List<String> additionalJars = getPigAdditionalJars();
+		if (additionalJars != null) {
+		    args += " -Dpig.additional.jars=" +super.createArguments(additionalJars, ":");
 		}
 		
 		return args;
@@ -125,5 +131,9 @@ public class PigProcessJob extends JavaProcessJob {
 
 	protected List<String> getPigParamFiles() {
 		return getProps().getStringList(PIG_PARAM_FILES, null, ",");
+	}
+	
+	protected List<String> getPigAdditionalJars() {
+	    return getProps().getStringList(PIG_ADDITIONAL_JARS, null, ",");
 	}
 }
